@@ -9,7 +9,14 @@ t : play with the Terminal""")
     quit()
 
 if __name__ == "__main__":
-    t = Terminal()
-    t.run()
+    if len(argv) != 2:
+        usage()
+    elif argv[1] == "t":
+        Ui = Terminal()
+    elif argv[1] == "g":
+        Ui = Gui()
+    else:
+        usage()
+    
+    #polymorphism being used
 
-#change comment here

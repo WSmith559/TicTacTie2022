@@ -13,9 +13,33 @@ class Gui(Ui):
         root = Tk()
         root.title("TicTacToe")
         frame = Frame(root)
-        frame.pack
+        frame.pack()
+
+        Button(
+            frame, 
+            text="help",
+            command=self.__show_help
+        ).pack(fill=X)
+        Button(
+            frame, 
+            text="play",
+            command=self.__play_game
+        ).pack(fill=X)
+        Button(
+            frame, 
+            text="quit",
+            command=self.__quit
+        ).pack(fill=X)
         self.__root = root
 
+    def __show_help(self):
+        pass
+
+    def __play_game(self):
+        pass
+
+    def __quit(self):
+        self.__root.quit
 
     def run(self):
         self.__root.mainloop()

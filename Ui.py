@@ -39,7 +39,7 @@ class Gui(Ui):
         pass
 
     def __quit(self):
-        self.__root.quit
+        self.__root.quit()
 
     def run(self):
         self.__root.mainloop()

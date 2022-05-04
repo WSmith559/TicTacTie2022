@@ -11,6 +11,7 @@ class Ui(ABC):
 
 class Gui(Ui):
     def __init__(self):
+        self.__game_win = None
         root = Tk()
         root.title("TicTacToe")
         frame = Frame(root)
@@ -41,11 +42,13 @@ class Gui(Ui):
         console.config(yscrollcommand=scroll.set)
 
         self.__root = root
+        self.__console = console
 
     def __show_help(self):
         pass
 
     def __play_game(self):
+        self.__finished=False
         self.__Game = Game()
 
         game_win = Toplevel(self.__root)
@@ -74,11 +77,31 @@ class Gui(Ui):
             Grid.rowconfigure(frame, i, weight=1)
             Grid.columnconfigure(frame,i,weight=1)
 
-        Button(game_win, text="dismiss", command=game_win.destroy).grid(row=1, column=0)
+        self.__game_win = game_win
+        Button(game_win, text="dismiss", command=self.__dismiss_game_win).grid(row=1, column=0)
+
+    def __dismiss_game_win(self):
+        self.game_win.destroy()
+        self.game_win = None
 
     def __play(self,r,c):
-        self.__Game.play(r+1,c+1)
+        if self.__finished:
+            return
+
+        try:
+            self.__Game.play(r+1,c+1)
+        except GameError as e:
+            self.__console.insert(END, f"{e}\n")
+
         self.__buttons[r][c].set(self.__Game.at(r+1,c+1))
+
+        if self.__Game.winner ==Game.DRAW:
+            self.__console.insert(END, "game is drawn\n")
+            self.__finished = True
+        elif self.__Game.winner:
+            self.__console.insert(END,f"game was won by {self.__Game.winner}\n")
+            self.__finished = True
+
 
     def __quit(self):
         self.__root.quit()

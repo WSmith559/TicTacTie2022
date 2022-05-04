@@ -31,6 +31,15 @@ class Gui(Ui):
             text="quit",
             command=self.__quit
         ).pack(fill=X)
+
+        scroll = Scrollbar(frame)
+        console = Text(frame, height=4, width=50)
+        scroll.pack(side=RIGHT, fill=Y)
+        console.pack(side=LEFT, fill=Y)
+
+        scroll.config(command= console.yview)
+        console.config(yscrollcommand=scroll.set)
+
         self.__root = root
 
     def __show_help(self):

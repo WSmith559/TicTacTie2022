@@ -51,7 +51,11 @@ class Gui(Ui):
         game_win = Toplevel(self.__root)
         game_win.title = ("Game")
         frame = Frame(game_win)
-        frame.grid(row=0, column=0)
+        #frame.grid(row=0, column=0)
+
+        Grid.columnconfigure(game_win, 0, weight=1)
+        Grid.rowconfigure(game_win, 0, weight=1)
+        frame.grid(row=0, column=0, sticky=N+S+E+W)
 
         self.__buttons = [[None for _ in range(3)] for _ in range(3)]
         for row, col in product(range(3), range(3)):
@@ -61,12 +65,16 @@ class Gui(Ui):
 
             cmd = lambda r=row, c=col: self.__play(r,c)
             Button(
-                game_win,
+                frame,
                 textvariable=b,
                 command=cmd
-            ).grid(row=row,column=col)
+            ).grid(row=row,column=col,sticky=N+S+E+W)
         
-        Button(game_win, text="dismiss", command=game_win.destroy).grid(row=3, column=1)
+        for i in range(3):
+            Grid.rowconfigure(frame, i, weight=1)
+            Grid.columnconfigure(frame,i,weight=1)
+
+        Button(game_win, text="dismiss", command=game_win.destroy).grid(row=1, column=0)
 
     def __play(self,r,c):
         self.__Game.play(r+1,c+1)
